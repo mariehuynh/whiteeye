@@ -13,7 +13,7 @@ def compute_metric(image):
     gmean = sum(gs.getdata()) / len(gs.getdata())
     bmean = sum(bs.getdata()) / len(bs.getdata())
 
-    h, s, v = colorsys.rgb_to_hsv(rmean / 255.0, gmean / 255.0, bmean / 255.0)
+    h, s, v = colorsys.rgb_to_hsv(rmean / 256.0, gmean / 256.0, bmean / 256.0)
     if h > 0.8:
         h = h - 1  # wrap around angular coordinate to be near 0
 
