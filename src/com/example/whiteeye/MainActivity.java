@@ -16,7 +16,10 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.view.TextureView;
 import android.view.View;
 
 import android.net.Uri;
@@ -26,6 +29,7 @@ import android.os.Environment;
 
 import android.widget.Button;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
 
@@ -204,12 +208,17 @@ public class MainActivity extends Activity {
         
 	}
     public void display(){
-    	System.out.println("HGi");
     	Resources res = getResources();
+    	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
+    	int pixel = bitmap.getPixel(bitmap.getWidth()/2,bitmap.getHeight()/2);
+    	int red = Color.red(pixel);
+    	int blue = Color.blue(pixel);
+    	int green = Color.green(pixel);
     	Drawable drawable = res.getDrawable(R.drawable.test);
-    	drawable.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+    	drawable.setColorFilter(Color.rgb(red,green,blue), PorterDuff.Mode.MULTIPLY);
         display = (ImageView) findViewById(R.id.test);
-    	display.setBackgroundColor(Color.RED);
+    	display.setImageDrawable(drawable);
+    	
     	
     
     }
