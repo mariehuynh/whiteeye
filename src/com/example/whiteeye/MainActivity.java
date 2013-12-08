@@ -201,7 +201,6 @@ public class MainActivity extends Activity {
 		        alert.show();
         	}
         }
-        //System.out.println("IM ALIVE");
 
 	}
     public void display() {
@@ -242,8 +241,12 @@ public class MainActivity extends Activity {
         display = (ImageView) findViewById(R.id.test);
     	display.setImageDrawable(drawable);
     	display.layout(200,200,200,200);
+    	
+    	int pixelAvg = (int)(redAvg);
+    	pixelAvg = (int)((pixelAvg << 8) + greenAvg);
+    	pixelAvg = (int)((pixelAvg << 8) + blueAvg);
 
-        System.out.println("Leukocoria metric: "+computeLeukocoriaMetric(pixel));
+        System.out.println("Leukocoria metric: "+computeLeukocoriaMetric(pixelAvg));
     }
 
     public double computeLeukocoriaMetric(int pixel){
