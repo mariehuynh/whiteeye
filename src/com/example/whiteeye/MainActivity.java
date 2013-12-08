@@ -43,22 +43,20 @@ import android.widget.ImageView;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.paypal.android.sdk.payments.PayPalPayment;
 
-import 
-com.paypal.android.sdk.payments.PayPalPayment;
-import 
-com.paypal.android.sdk.payments.PayPalService;
-import 
-com.paypal.android.sdk.payments.PaymentActivity;
 
 public class MainActivity extends Activity {
-	private Uri mImageCaptureUri;
-	private ImageView mImageView;
-	private ImageView display;
-	private static final int PICK_FROM_CAMERA = 1;
-	private static final int CROP_FROM_CAMERA = 2;
-	private static final int PICK_FROM_FILE = 3;
-	
+
+    private Uri mImageCaptureUri;
+    private ImageView mImageView;
+    private ImageView display;
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int CROP_FROM_CAMERA = 2;
+    private static final int PICK_FROM_FILE = 3;
+    private static final int DONATE_PAYPAL = 4;
+
+    private static final int RESULT_PAYMENT_INVALID = 1749;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,63 +64,72 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main);
 
-        final String [] items			= new String [] {"Take from camera", "Select from gallery"};
-		ArrayAdapter<String> adapter	= new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
-		AlertDialog.Builder builder		= new AlertDialog.Builder(this);
-//PayPal
-	    Intent intent = new Intent(this, PayPalService.class);
+        final String [] items = new String [] {"Take from camera", "Select from gallery"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-	    // live: don't put any environment extra
-	    // sandbox: use PaymentActivity.ENVIRONMENT_SANDBOX
-	    intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT, PaymentActivity.ENVIRONMENT_SANDBOX);
+        //PayPal
+        Intent intent = new Intent(this, PayPalService.class);
+        // live: don't put any environment extra
+        // sandbox: use PaymentActivity.ENVIRONMENT_SANDBOX
+        intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT, PaymentActivity.ENVIRONMENT_SANDBOX);
+        intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, "ATGFoBAoBX_fdgrxqShtz7G9DzfZ8JoqbJ9GqUFfpvLLxqeqQ_VwRyvizOhd");
+        startService(intent);
+        //End PayPal
 
-	    intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, "ATGFoBAoBX_fdgrxqShtz7G9DzfZ8JoqbJ9GqUFfpvLLxqeqQ_VwRyvizOhd");
+        builder.setTitle("Select Image");
 
-	    startService(intent);
-	    
-	    
-//End PayPal
-		builder.setTitle("Select Image");
-		builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-			public void onClick( DialogInterface dialog, int item ) { //pick from camera
-				if (item == 0) {
-					Intent intent 	 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String msg = "Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases.  This app will scan an image of an eye and compare it to data collected from patients in a recent research study.  For best results, dilate the pupils and try to crop the photo in so the red box is in the pupil.  Thanks for checking this app out!";
 
-					mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-									   "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Hello there!");
+        alertDialog.setMessage(msg);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int which) {
+              // TODO Add your code for the button here.
+        	  // Do nothing for now
+           }
+        });
+        // Set the Icon for the Dialog
+        alertDialog.show();
 
-					intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+            public void onClick( DialogInterface dialog, int item ) { //pick from camera
+                if (item == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                                       "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+                    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                    intent.putExtra("return-data", true);
 
-					try {
-						intent.putExtra("return-data", true);
+                    try {
+                        startActivityForResult(intent, PICK_FROM_CAMERA);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else { //pick from file
+                    Intent intent = new Intent();
 
-						startActivityForResult(intent, PICK_FROM_CAMERA);
-					} catch (ActivityNotFoundException e) {
-						e.printStackTrace();
-					}
-				} else { //pick from file
-					Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
 
-	                intent.setType("image/*");
-	                intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
 
-	                startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
+                }
+            }
+        } );
 
-				}
-			}
-		} );
+        final AlertDialog dialog = builder.create();
 
-		final AlertDialog dialog = builder.create();
+        Button cropButton = (Button) findViewById(R.id.btn_crop);
+        mImageView = (ImageView) findViewById(R.id.iv_photo);
 
-		Button cropButton = (Button) findViewById(R.id.btn_crop);
-		mImageView = (ImageView) findViewById(R.id.iv_photo);
-
-		cropButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				dialog.show();
-			}
-		});
+        cropButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
 
         Button infoButton = (Button) findViewById(R.id.btn_info);
         infoButton.setOnClickListener(new View.OnClickListener() {
@@ -136,84 +143,75 @@ public class MainActivity extends Activity {
     }
 
     @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-//Begin Paypal
-if (resultCode == Activity.RESULT_OK) {
-    PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-    if (confirm != null) {
-      //verifyPayment(confirm);
-      
-      try {
-          Log.i("paymentExample", confirm.toJSONObject().toString(4));
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(resultCode) {
+            case Activity.RESULT_CANCELED: //PayPal
+                Log.i("paymentExample", "The user canceled.");
 
-          // TODO: send 'confirm' to your server for verification.
-          // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
-          // for more details.
+                    break;
+            case RESULT_PAYMENT_INVALID: //PayPal
+                Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
+                break;
+        }
+        if (resultCode != Activity.RESULT_OK) return;
 
-      } catch (JSONException e) {
-          Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
-      }
+        switch (requestCode) {
+            case PICK_FROM_CAMERA:
+                doCrop();
+                break;
+            case PICK_FROM_FILE:
+                mImageCaptureUri = data.getData();
+                doCrop();
+                break;
+            case CROP_FROM_CAMERA:
+                Bundle extras = data.getExtras();
+
+                if (extras != null) {
+                    Bitmap photo = extras.getParcelable("data");
+                    int red = 0xFFFF0000;
+
+                    // Draw horizontal red lines around area scanned
+                    for(int x = (int)(photo.getWidth()*.35); x<(int)(photo.getWidth()*.65); x++) {
+                        photo.setPixel(x, (int) (photo.getHeight()*.35), red);
+                        photo.setPixel(x, (int) (photo.getHeight()*.65), red);
+                    }
+
+                    // Draw vertical red lines around area scanned
+                    for(int y = (int)(photo.getHeight()*.35); y<(int)(photo.getHeight()*.65); y++) {
+                        photo.setPixel((int) (photo.getHeight()*.35), y, red);
+                        photo.setPixel((int) (photo.getHeight()*.65), y, red);
+                    }
+
+                    mImageView.setImageBitmap(photo);
+                }
+
+                File f = new File(mImageCaptureUri.getPath());
+
+                if (f.exists()) f.delete();
+
+                display();
+                break;
+
+            case DONATE_PAYPAL:   //PayPal
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirm != null) {
+                    try {
+                        Log.i("paymentExample", confirm.toJSONObject().toString(4));
+
+                        // TODO: send 'confirm' to your server for verification.
+                        // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                        // for more details.
+                    } catch (JSONException e) {
+                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+
+                break;
+
+        }
     }
-  } else if (resultCode == Activity.RESULT_CANCELED) {
-    // Show the user that this got canceled
-	  Log.i("paymentExample", "The user canceled.");
-  } else if (resultCode == PaymentActivity.RESULT_PAYMENT_INVALID) {
-    // Check the docs ;)
-	  Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
-  }
-   
 
- // End Paypal
-
-    	if (resultCode != RESULT_OK) return;
-
-	    switch (requestCode) {
-		    case PICK_FROM_CAMERA:
-		    	doCrop();
-
-		    	break;
-
-		    case PICK_FROM_FILE:
-		    	mImageCaptureUri = data.getData();
-
-		    	doCrop();
-
-		    	break;
-
-		    case CROP_FROM_CAMERA:
-		        Bundle extras = data.getExtras();
-
-		        if (extras != null) {
-		            Bitmap photo = extras.getParcelable("data");
-		            int red = 0xFFFF0000;
-
-		            // Draw horizontal red lines around area scanned
-		            for(int x = (int)(photo.getWidth()*.35); x<(int)(photo.getWidth()*.65); x++) {
-		            	photo.setPixel(x, (int) (photo.getHeight()*.35), red);
-		            	photo.setPixel(x, (int) (photo.getHeight()*.65), red);
-		            }
-
-		            // Draw vertical red lines around area scanned
-		            for(int y = (int)(photo.getHeight()*.35); y<(int)(photo.getHeight()*.65); y++) {
-		            	photo.setPixel((int) (photo.getHeight()*.35), y, red);
-		            	photo.setPixel((int) (photo.getHeight()*.65), y, red);
-		            }
-
-		            mImageView.setImageBitmap(photo);
-		        }
-
-		        File f = new File(mImageCaptureUri.getPath());
-
-		        if (f.exists()) f.delete();
-
-		        display();
-		        break;
-
-		    
-	    }
-	}
-    
     //PayPal
     @Override
     public void onDestroy() {
@@ -221,15 +219,14 @@ if (resultCode == Activity.RESULT_OK) {
         super.onDestroy();
     }
     //End PayPal
-    
+
     //PayPal
     public void onDonatePressed(View pressed) {
-    	
-    	//PayPalPayment payment = new PayPalPayment();
-    	PayPalPayment payment = new PayPalPayment(new BigDecimal("20"), "USD", "Retinoblastoma.net suggested donation");
-    	//Double your contribution if your employer has a Matching Gift Program!
-        
-             
+
+        //PayPalPayment payment = new PayPalPayment();
+        PayPalPayment payment = new PayPalPayment(new BigDecimal("20"), "USD", "Retinoblastoma.net suggested donation");
+        //Double your contribution if your employer has a Matching Gift Program!
+
         Intent intent = new Intent(this, PaymentActivity.class);
 
         // comment this line out for live or set to PaymentActivity.ENVIRONMENT_SANDBOX for sandbox
@@ -247,16 +244,14 @@ if (resultCode == Activity.RESULT_OK) {
         intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "dec08@yahoo.com");
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, DONATE_PAYPAL);
     }
-    
-    
-//End PayPal
+    //End PayPal
 
     private void doCrop() {
-		final ArrayList<CropOption> cropOptions = new ArrayList<CropOption>();
+        final ArrayList<CropOption> cropOptions = new ArrayList<CropOption>();
 
-    	Intent intent = new Intent("com.android.camera.action.CROP");
+        Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setType("image/*");
 
         List<ResolveInfo> list = getPackageManager().queryIntentActivities( intent, 0 );
@@ -264,11 +259,11 @@ if (resultCode == Activity.RESULT_OK) {
         int size = list.size();
 
         if (size == 0) {
-        	Toast.makeText(this, "Can not find image crop app", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Can not find image crop app", Toast.LENGTH_SHORT).show();
 
             return;
         } else {
-        	intent.setData(mImageCaptureUri);
+            intent.setData(mImageCaptureUri);
 
             intent.putExtra("outputX", 200);
             intent.putExtra("outputY", 200);
@@ -277,100 +272,101 @@ if (resultCode == Activity.RESULT_OK) {
             intent.putExtra("scale", true);
             intent.putExtra("return-data", true);
 
-        	if (size == 1) {
-        		Intent i 		= new Intent(intent);
-	        	ResolveInfo res	= list.get(0);
+            if (size == 1) {
+                Intent i         = new Intent(intent);
+                ResolveInfo res    = list.get(0);
 
-	        	i.setComponent( new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+                i.setComponent( new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
 
-	        	startActivityForResult(i, CROP_FROM_CAMERA);
-        	} else {
-		        for (ResolveInfo res : list) {
-		        	final CropOption co = new CropOption();
+                startActivityForResult(i, CROP_FROM_CAMERA);
+            } else {
+                for (ResolveInfo res : list) {
+                    final CropOption co = new CropOption();
 
-		        	co.title 	= getPackageManager().getApplicationLabel(res.activityInfo.applicationInfo);
-		        	co.icon		= getPackageManager().getApplicationIcon(res.activityInfo.applicationInfo);
-		        	co.appIntent= new Intent(intent);
+                    co.title     = getPackageManager().getApplicationLabel(res.activityInfo.applicationInfo);
+                    co.icon        = getPackageManager().getApplicationIcon(res.activityInfo.applicationInfo);
+                    co.appIntent= new Intent(intent);
 
-		        	co.appIntent.setComponent( new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+                    co.appIntent.setComponent( new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
 
-		            cropOptions.add(co);
-		        }
+                    cropOptions.add(co);
+                }
 
-		        CropOptionAdapter adapter = new CropOptionAdapter(getApplicationContext(), cropOptions);
+                CropOptionAdapter adapter = new CropOptionAdapter(getApplicationContext(), cropOptions);
 
-		        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		        builder.setTitle("Choose Crop App");
-		        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-		            public void onClick( DialogInterface dialog, int item ) {
-		                startActivityForResult( cropOptions.get(item).appIntent, CROP_FROM_CAMERA);
-		            }
-		        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Choose Crop App");
+                builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+                    public void onClick( DialogInterface dialog, int item ) {
+                        startActivityForResult( cropOptions.get(item).appIntent, CROP_FROM_CAMERA);
+                    }
+                });
 
-		        builder.setOnCancelListener( new DialogInterface.OnCancelListener() {
-		            @Override
-		            public void onCancel( DialogInterface dialog ) {
+                builder.setOnCancelListener( new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel( DialogInterface dialog ) {
 
-		                if (mImageCaptureUri != null ) {
-		                    getContentResolver().delete(mImageCaptureUri, null, null );
-		                    mImageCaptureUri = null;
-		                }
-		            }
-		        } );
+                        if (mImageCaptureUri != null ) {
+                            getContentResolver().delete(mImageCaptureUri, null, null );
+                            mImageCaptureUri = null;
+                        }
+                    }
+                } );
 
-		        AlertDialog alert = builder.create();
+                AlertDialog alert = builder.create();
 
-		        alert.show();
-        	}
+                alert.show();
+            }
         }
 
-	}
+    }
     public void display() {
-    	Resources res = getResources();
-    	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
+        Resources res = getResources();
+        Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
 
-    	int xmin = (int) (bitmap.getWidth() * 0.35),
-    		xmax = (int) (bitmap.getWidth() * 0.65),
-    	    ymin = (int) (bitmap.getHeight() * 0.35),
-    	    ymax = (int) (bitmap.getHeight() * 0.65);
-    	long redTotal = 0;
-    	long blueTotal = 0;
-    	long greenTotal = 0;
+        int xmin = (int) (bitmap.getWidth() * 0.35),
+            xmax = (int) (bitmap.getWidth() * 0.65),
+            ymin = (int) (bitmap.getHeight() * 0.35),
+            ymax = (int) (bitmap.getHeight() * 0.65);
+        long redTotal = 0;
+        long blueTotal = 0;
+        long greenTotal = 0;
 
-    	// Sum up for average over center
-    	for(int i = xmin; i <= xmax; i++){
-    		for(int j = ymin; j <= ymax; j++){
-    	    	int pixel = bitmap.getPixel(i, j);
+        // Sum up for average over center
+        for(int i = xmin; i <= xmax; i++){
+            for(int j = ymin; j <= ymax; j++){
+                int pixel = bitmap.getPixel(i, j);
 
-    	    	redTotal += Color.red(pixel);
-    	    	blueTotal += Color.blue(pixel);
-    	    	greenTotal += Color.green(pixel);
-    		}
-    	}
+                redTotal += Color.red(pixel);
+                blueTotal += Color.blue(pixel);
+                greenTotal += Color.green(pixel);
+            }
+        }
 
-    	// Divide for average
-    	long redAvg =  (long) (redTotal / ((xmax-xmin) * (ymax-ymin)));
-    	long blueAvg =  (long) (blueTotal / ((xmax-xmin) * (ymax-ymin)));
-    	long greenAvg =  (long) (greenTotal / ((xmax-xmin) * (ymax-ymin)));
+        // Divide for average
+        long redAvg =  (long) (redTotal / ((xmax-xmin) * (ymax-ymin)));
+        long blueAvg =  (long) (blueTotal / ((xmax-xmin) * (ymax-ymin)));
+        long greenAvg =  (long) (greenTotal / ((xmax-xmin) * (ymax-ymin)));
 
-    	// Correct for possible overflow from rounding errors
-    	if(redAvg > 255) redAvg = 255;
-    	if(blueAvg > 255) blueAvg = 255;
-    	if(greenAvg > 255) greenAvg = 255;
+        // Correct for possible overflow from rounding errors
+        if(redAvg > 255) redAvg = 255;
+        if(blueAvg > 255) blueAvg = 255;
+        if(greenAvg > 255) greenAvg = 255;
 
-    	Drawable drawable = res.getDrawable(R.drawable.test);
-    	drawable.setColorFilter(Color.rgb((int)redAvg,(int)greenAvg,(int)blueAvg), PorterDuff.Mode.MULTIPLY);
+        Drawable drawable = res.getDrawable(R.drawable.test);
+        drawable.setColorFilter(Color.rgb((int)redAvg,(int)greenAvg,(int)blueAvg), PorterDuff.Mode.MULTIPLY);
         display = (ImageView) findViewById(R.id.test);
-    	display.setImageDrawable(drawable);
-    	display.layout(200,200,200,200);
+        display.setImageDrawable(drawable);
+        display.layout(200,200,200,200);
 
-    	int pixelAvg = (int)(redAvg);
-    	pixelAvg = (int)((pixelAvg << 8) + greenAvg);
-    	pixelAvg = (int)((pixelAvg << 8) + blueAvg);
+        int pixelAvg = (int)(redAvg);
+        pixelAvg = (int)((pixelAvg << 8) + greenAvg);
+        pixelAvg = (int)((pixelAvg << 8) + blueAvg);
 
         TextView textView = (TextView) findViewById(R.id.text_result);
 
         double metric = computeLeukocoriaMetric(pixelAvg);
+        System.out.println("Leukocoria metric: " + Double.toString(metric));
         if (metric < 1) {
             textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very low.");
         } else if (metric < 3) {
@@ -381,12 +377,12 @@ if (resultCode == Activity.RESULT_OK) {
     }
 
     public double computeLeukocoriaMetric(int pixel){
-    	float hsv[] = new float[3];
+        float hsv[] = new float[3];
         Color.colorToHSV(pixel, hsv);
         double h = hsv[0];
         double s = hsv[1];
         double v = hsv[2];
-        if (h > 0.8) h -= 1;
+        if (h > 0.7) h -= 1;
 
         double metric_h = 1 - (h / 360.0 - 0.2) * (h / 360.0 - 0.2);
         if (metric_h < 0.1) metric_h = 0.1;
