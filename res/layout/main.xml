@@ -30,13 +30,14 @@
 	    android:layout_height="wrap_content"
 	    android:text="Select image" />
 
+    
     <ImageView
 	    android:id="@+id/iv_photo"
 	    android:layout_marginTop="10dp"
 
 	    android:layout_gravity="center_horizontal"
 	    android:layout_width="fill_parent"
-	    android:layout_height="200dp"/>
+	    android:layout_height="17dp"/>
 
     <ImageView
        android:id="@+id/test"
@@ -46,6 +47,7 @@
        android:adjustViewBounds="true"
        android:maxWidth="100dp"
        android:maxHeight="200dp"
+       
 
        android:layout_marginLeft="50dp"
        android:layout_marginBottom="50dp"
@@ -73,8 +75,9 @@
     
     <ImageButton
         android:id="@+id/btn_donate"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center"
         android:src="@drawable/donate_button"
         android:onClick="onDonatePressed"  />
 

@@ -58,9 +58,7 @@ public class MainActivity extends Activity {
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_FROM_CAMERA = 2;
 	private static final int PICK_FROM_FILE = 3;
-	private static final int RESULT_PAYMENT_INVALID = 0;
-	private static final int RESULT_OK = 5;
-	private static final int RESULT_CANCELLED = 6;
+	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,7 +137,36 @@ public class MainActivity extends Activity {
 
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (resultCode != RESULT_OK) return;
+
+//Begin Paypal
+if (resultCode == Activity.RESULT_OK) {
+    PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+    if (confirm != null) {
+      //verifyPayment(confirm);
+      
+      try {
+          Log.i("paymentExample", confirm.toJSONObject().toString(4));
+
+          // TODO: send 'confirm' to your server for verification.
+          // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+          // for more details.
+
+      } catch (JSONException e) {
+          Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+      }
+    }
+  } else if (resultCode == Activity.RESULT_CANCELED) {
+    // Show the user that this got canceled
+	  Log.i("paymentExample", "The user canceled.");
+  } else if (resultCode == PaymentActivity.RESULT_PAYMENT_INVALID) {
+    // Check the docs ;)
+	  Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
+  }
+   
+
+ // End Paypal
+
+    	if (resultCode != RESULT_OK) return;
 
 	    switch (requestCode) {
 		    case PICK_FROM_CAMERA:
@@ -183,37 +210,7 @@ public class MainActivity extends Activity {
 		        display();
 		        break;
 
-		    case RESULT_OK:   //PayPal
-		    	
-		        
-		       
-		                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-		                if (confirm != null) {
-		                    try {
-		                        Log.i("paymentExample", confirm.toJSONObject().toString(4));
-
-		                        // TODO: send 'confirm' to your server for verification.
-		                        // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
-		                        // for more details.
-
-		                    } catch (JSONException e) {
-		                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
-		                    }
-		                }
-		            
-	    			break;
-	    case RESULT_CANCELLED: //PayPal
-		            
-		                Log.i("paymentExample", "The user canceled.");
-		                
-		                break;
-	    case RESULT_PAYMENT_INVALID: //PayPal
-		           
-		                Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
-		                break;
-		        
-
-
+		    
 	    }
 	}
     
@@ -232,9 +229,7 @@ public class MainActivity extends Activity {
     	PayPalPayment payment = new PayPalPayment(new BigDecimal("20"), "USD", "Retinoblastoma.net suggested donation");
     	//Double your contribution if your employer has a Matching Gift Program!
         
-       
-        //PayPalPayment payment = new PayPalPayment(new BigDecimal("8.75"), "USD", "research help");
-
+             
         Intent intent = new Intent(this, PaymentActivity.class);
 
         // comment this line out for live or set to PaymentActivity.ENVIRONMENT_SANDBOX for sandbox
@@ -246,9 +241,10 @@ public class MainActivity extends Activity {
 
         // Provide a payerId that uniquely identifies a user within the scope of your system,
         // such as an email address or user ID.
-        intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "<someuser@somedomain.com>");
+        intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "<dec07@yahoo.com");
 
-        intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "nguyentiffanyus-facilitator@yahoo.com");
+        
+        intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "dec08@yahoo.com");
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
         startActivityForResult(intent, 0);
