@@ -35,6 +35,9 @@
         <activity android:name="io.card.payment.DataEntryActivity" />
     </application>
 
+<!-- for writing temporary files -->
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <!-- for card.io card scanning -->
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.VIBRATE" />
