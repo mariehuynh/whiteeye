@@ -23,6 +23,14 @@
 	    android:textStyle="bold"
 	    android:textSize="17sp"
 	    android:text="How to select and crop image"/>
+	
+	<ImageView 
+   android:id="@+id/test"
+   android:src="@drawable/test"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:background="#152" 
+   />
 	    
 	<Button 
 		android:id="@+id/btn_crop"

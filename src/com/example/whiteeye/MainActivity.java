@@ -13,8 +13,9 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 
-import android.graphics.Bitmap;
+import android.graphics.*;
 import android.provider.MediaStore;
 import android.view.View;
 
@@ -31,7 +32,7 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
 	private Uri mImageCaptureUri;
 	private ImageView mImageView;
-
+	private ImageView display;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_FROM_CAMERA = 2;
 	private static final int PICK_FROM_FILE = 3;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
+       
 
         final String [] items			= new String [] {"Take from camera", "Select from gallery"};
 		ArrayAdapter<String> adapter	= new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
@@ -71,6 +73,7 @@ public class MainActivity extends Activity {
 	                intent.setAction(Intent.ACTION_GET_CONTENT);
 
 	                startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
+	               
 				}
 			}
 		} );
@@ -79,13 +82,14 @@ public class MainActivity extends Activity {
 
 		Button button 	= (Button) findViewById(R.id.btn_crop);
 		mImageView		= (ImageView) findViewById(R.id.iv_photo);
-
+		
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog.show();
 			}
 		});
+		
     }
 
     @Override
@@ -95,7 +99,7 @@ public class MainActivity extends Activity {
 	    switch (requestCode) {
 		    case PICK_FROM_CAMERA:
 		    	doCrop();
-
+		    	
 		    	break;
 
 		    case PICK_FROM_FILE:
@@ -117,10 +121,13 @@ public class MainActivity extends Activity {
 		        File f = new File(mImageCaptureUri.getPath());
 
 		        if (f.exists()) f.delete();
-
+		        System.out.println("HI");
+		        display();
+		        //getPixel();
 		        break;
 
 	    }
+	    
 	}
 
     private void doCrop() {
@@ -193,5 +200,34 @@ public class MainActivity extends Activity {
 		        alert.show();
         	}
         }
+        //System.out.println("IM ALIVE");
+        
 	}
+    public void display(){
+    	System.out.println("HGi");
+    	Resources res = getResources();
+    	Drawable drawable = res.getDrawable(R.drawable.test);
+    	drawable.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+        display = (ImageView) findViewById(R.id.test);
+    	display.setBackgroundColor(Color.RED);
+    	
+    
+    }
+    
+    /*public void getPixel(){
+    	//mImageView.buildDrawingCache();
+    	//Bitmap bmap = imageView.getDrawingCache();
+    	//BitmapDrawable test = (BitmapDrawable)(mImageView.getDrawable());
+    	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
+    	//System.out.println("STILL ALIVE");
+    	int pixel = bitmap.getPixel(2,2);//ARBITRARY NUMBERS
+    	int red = Color.red(pixel);
+    	int blue = Color.blue(pixel);
+    	int green = Color.green(pixel);
+    	System.out.println("pixel "+pixel);
+    	System.out.println("Red: "+red+" Blue: "+blue+" Green: "+green);
+    	System.out.println("Red over White is: "+(red+0.0)/(red+green+blue));
+    }*/
+    
+
 }
