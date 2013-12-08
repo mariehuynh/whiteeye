@@ -14,7 +14,19 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+
 import android.graphics.Bitmap;
+import android.content.res.Resources;
+
+import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.provider.MediaStore;
+import android.text.method.LinkMovementMethod;
+import android.text.Html;
+import android.view.TextureView;
+import android.view.View;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,8 +35,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
+
 
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
@@ -40,7 +54,7 @@ com.paypal.android.sdk.payments.PaymentActivity;
 public class MainActivity extends Activity {
 	private Uri mImageCaptureUri;
 	private ImageView mImageView;
-
+	private ImageView display;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_FROM_CAMERA = 2;
 	private static final int PICK_FROM_FILE = 3;
@@ -95,21 +109,32 @@ public class MainActivity extends Activity {
 	                intent.setAction(Intent.ACTION_GET_CONTENT);
 
 	                startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
+
 				}
 			}
 		} );
 
 		final AlertDialog dialog = builder.create();
 
-		Button button 	= (Button) findViewById(R.id.btn_crop);
-		mImageView		= (ImageView) findViewById(R.id.iv_photo);
+		Button cropButton = (Button) findViewById(R.id.btn_crop);
+		mImageView = (ImageView) findViewById(R.id.iv_photo);
 
-		button.setOnClickListener(new View.OnClickListener() {
+		cropButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog.show();
 			}
 		});
+
+        Button infoButton = (Button) findViewById(R.id.btn_info);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://www.retinoblastoma.net/what_is.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -134,6 +159,19 @@ public class MainActivity extends Activity {
 
 		        if (extras != null) {
 		            Bitmap photo = extras.getParcelable("data");
+		            int red = 0xFFFF0000;
+
+		            // Draw horizontal red lines around area scanned
+		            for(int x = (int)(photo.getWidth()*.35); x<(int)(photo.getWidth()*.65); x++) {
+		            	photo.setPixel(x, (int) (photo.getHeight()*.35), red);
+		            	photo.setPixel(x, (int) (photo.getHeight()*.65), red);
+		            }
+
+		            // Draw vertical red lines around area scanned
+		            for(int y = (int)(photo.getHeight()*.35); y<(int)(photo.getHeight()*.65); y++) {
+		            	photo.setPixel((int) (photo.getHeight()*.35), y, red);
+		            	photo.setPixel((int) (photo.getHeight()*.65), y, red);
+		            }
 
 		            mImageView.setImageBitmap(photo);
 		        }
@@ -142,7 +180,9 @@ public class MainActivity extends Activity {
 
 		        if (f.exists()) f.delete();
 
+		        display();
 		        break;
+
 		    case RESULT_OK:   //PayPal
 		    	
 		        
@@ -172,6 +212,7 @@ public class MainActivity extends Activity {
 		                Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
 		                break;
 		        
+
 
 	    }
 	}
@@ -286,5 +327,74 @@ public class MainActivity extends Activity {
 		        alert.show();
         	}
         }
+
 	}
+    public void display() {
+    	Resources res = getResources();
+    	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
+
+    	int xmin = (int) (bitmap.getWidth() * 0.35),
+    		xmax = (int) (bitmap.getWidth() * 0.65),
+    	    ymin = (int) (bitmap.getHeight() * 0.35),
+    	    ymax = (int) (bitmap.getHeight() * 0.65);
+    	long redTotal = 0;
+    	long blueTotal = 0;
+    	long greenTotal = 0;
+
+    	// Sum up for average over center
+    	for(int i = xmin; i <= xmax; i++){
+    		for(int j = ymin; j <= ymax; j++){
+    	    	int pixel = bitmap.getPixel(i, j);
+
+    	    	redTotal += Color.red(pixel);
+    	    	blueTotal += Color.blue(pixel);
+    	    	greenTotal += Color.green(pixel);
+    		}
+    	}
+
+    	// Divide for average
+    	long redAvg =  (long) (redTotal / ((xmax-xmin) * (ymax-ymin)));
+    	long blueAvg =  (long) (blueTotal / ((xmax-xmin) * (ymax-ymin)));
+    	long greenAvg =  (long) (greenTotal / ((xmax-xmin) * (ymax-ymin)));
+
+    	// Correct for possible overflow from rounding errors
+    	if(redAvg > 255) redAvg = 255;
+    	if(blueAvg > 255) blueAvg = 255;
+    	if(greenAvg > 255) greenAvg = 255;
+
+    	Drawable drawable = res.getDrawable(R.drawable.test);
+    	drawable.setColorFilter(Color.rgb((int)redAvg,(int)greenAvg,(int)blueAvg), PorterDuff.Mode.MULTIPLY);
+        display = (ImageView) findViewById(R.id.test);
+    	display.setImageDrawable(drawable);
+    	display.layout(200,200,200,200);
+
+    	int pixelAvg = (int)(redAvg);
+    	pixelAvg = (int)((pixelAvg << 8) + greenAvg);
+    	pixelAvg = (int)((pixelAvg << 8) + blueAvg);
+
+        TextView textView = (TextView) findViewById(R.id.text_result);
+
+        double metric = computeLeukocoriaMetric(pixelAvg);
+        if (metric < 1) {
+            textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very low.");
+        } else if (metric < 3) {
+            textView.setText("Based on the average colors of the cropped image, our Leukocoria test is inconclusive.");
+        } else{
+            textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very high.");
+        }
+    }
+
+    public double computeLeukocoriaMetric(int pixel){
+    	float hsv[] = new float[3];
+        Color.colorToHSV(pixel, hsv);
+        double h = hsv[0];
+        double s = hsv[1];
+        double v = hsv[2];
+        if (h > 0.8) h -= 1;
+
+        double metric_h = 1 - (h / 360.0 - 0.2) * (h / 360.0 - 0.2);
+        if (metric_h < 0.1) metric_h = 0.1;
+        double metric = metric_h / (2 * s * s + (1 - v) * (1 - v) + 0.01);
+        return metric;
+    }
 }

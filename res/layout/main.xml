@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
 /*
 **
 ** /res/layout/main.xml
@@ -13,40 +13,69 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    
-	<TextView  
-	    android:layout_width="fill_parent" 
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="17sp"
+        android:text="Select an image and crop down to the eye"/>
+
+    <Button
+	    android:id="@+id/btn_crop"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:text="Select image" />
+
+    <ImageView
+	    android:id="@+id/iv_photo"
 	    android:layout_marginTop="10dp"
-	    android:layout_marginBottom="10dp"
-	    android:gravity="center"
-	    android:textStyle="bold"
-	    android:textSize="17sp"
-	    android:width="0dip"
-	    android:text="How to select and crop image"/>
-	    
-	<Button 
-		android:id="@+id/btn_crop"
-		android:layout_width="match_parent" 		 
-		android:layout_height="wrap_content"
-		android:text="Select image" />
-		
-	<ImageView
-		android:id="@+id/iv_photo"
-		android:layout_marginTop="10dp"
-		android:layout_gravity="center_horizontal"
-		android:layout_width="fill_parent" 		 
-		android:layout_height="200dp"/>
-	
-	
-	
-		
-		 <ImageButton
+
+	    android:layout_gravity="center_horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="200dp"/>
+
+    <ImageView
+       android:id="@+id/test"
+       android:src="@drawable/test"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:adjustViewBounds="true"
+       android:maxWidth="100dp"
+       android:maxHeight="200dp"
+
+       android:layout_marginLeft="50dp"
+       android:layout_marginBottom="50dp"
+       android:layout_gravity="left"
+       android:background="#152"
+       />
+
+    <TextView
+        android:id="@+id/text_result"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+
+        android:layout_marginRight="50dp"
+        android:gravity="right"
+        android:textStyle="bold"
+        android:textSize="17sp"
+        android:text=""/>
+
+    <Button
+	    android:id="@+id/btn_info"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Find out more about Retinoblastoma" />
+    
+    <ImageButton
         android:id="@+id/btn_donate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/donate_button"
         android:onClick="onDonatePressed"  />
-	
-		
+
 </LinearLayout>
