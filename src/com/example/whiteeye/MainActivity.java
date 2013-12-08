@@ -44,9 +44,9 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         setContentView(R.layout.main);
-       
+
 
         final String [] items			= new String [] {"Take from camera", "Select from gallery"};
 		ArrayAdapter<String> adapter	= new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
 	                intent.setAction(Intent.ACTION_GET_CONTENT);
 
 	                startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
-	               
+
 				}
 			}
 		} );
@@ -86,14 +86,14 @@ public class MainActivity extends Activity {
 
 		Button button 	= (Button) findViewById(R.id.btn_crop);
 		mImageView		= (ImageView) findViewById(R.id.iv_photo);
-		
+
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog.show();
 			}
 		});
-		
+
     }
 
     @Override
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 	    switch (requestCode) {
 		    case PICK_FROM_CAMERA:
 		    	doCrop();
-		    	
+
 		    	break;
 
 		    case PICK_FROM_FILE:
@@ -125,13 +125,10 @@ public class MainActivity extends Activity {
 		        File f = new File(mImageCaptureUri.getPath());
 
 		        if (f.exists()) f.delete();
-		        System.out.println("HI");
-		        display();
-		        //getPixel();
-		        break;
 
+		        display();
+		        break;
 	    }
-	    
 	}
 
     private void doCrop() {
@@ -205,7 +202,7 @@ public class MainActivity extends Activity {
         	}
         }
         //System.out.println("IM ALIVE");
-        
+
 	}
     public void display() {
     	Resources res = getResources();
@@ -244,25 +241,25 @@ public class MainActivity extends Activity {
     	drawable.setColorFilter(Color.rgb((int)redAvg,(int)greenAvg,(int)blueAvg), PorterDuff.Mode.MULTIPLY);
         display = (ImageView) findViewById(R.id.test);
     	display.setImageDrawable(drawable);
-    	
-    	
-    
-    }
-    
-    /*public void getPixel(){
-    	//mImageView.buildDrawingCache();
-    	//Bitmap bmap = imageView.getDrawingCache();
-    	//BitmapDrawable test = (BitmapDrawable)(mImageView.getDrawable());
-    	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
-    	//System.out.println("STILL ALIVE");
-    	int pixel = bitmap.getPixel(2,2);//ARBITRARY NUMBERS
-    	int red = Color.red(pixel);
-    	int blue = Color.blue(pixel);
-    	int green = Color.green(pixel);
-    	System.out.println("pixel "+pixel);
-    	System.out.println("Red: "+red+" Blue: "+blue+" Green: "+green);
-    	System.out.println("Red over White is: "+(red+0.0)/(red+green+blue));
-    }*/
-    
+    	display.layout(200,200,200,200);
 
+        System.out.println("Leukocoria metric: "+computeLeukocoriaMetric(pixel));
+    }
+
+    public double computeLeukocoriaMetric(int pixel){
+    	float hsv[] = new float[3];
+        Color.colorToHSV(pixel, hsv);
+        double h = hsv[0];
+        double s = hsv[1];
+        double v = hsv[2];
+        if (h > 0.8) h -= 1;
+
+    	System.out.println("pixel "+pixel);
+    	System.out.println("Hue: "+hsv[0]+" Saturation: "+hsv[1]+" Value: "+hsv[2]);
+
+        double metric_h = 1 - (h / 360.0 - 0.2) * (h / 360.0 - 0.2);
+        if (metric_h < 0.1) metric_h = 0.1;
+        double metric = metric_h / (2 * s * s + (1 - v) * (1 - v) + 0.01);
+        return metric;
+    }
 }
