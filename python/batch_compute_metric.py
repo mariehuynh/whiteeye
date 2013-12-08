@@ -1,4 +1,13 @@
 #!/usr/bin/python
+"""
+Try to formulate a metric to separate photographs of pupils into those with
+Leukocoria and those without.
+
+This metric was motivated by the findings of:
+http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0076677#s2
+
+See particularly figure 10.
+"""
 
 import colorsys
 import os
