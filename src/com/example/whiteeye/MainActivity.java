@@ -273,11 +273,11 @@ public class MainActivity extends Activity {
 
         double metric = computeLeukocoriaMetric(pixelAvg);
         if (metric < 1) {
-            textView.setText("Based on the average properties of the cropped image, the chance of Leukocoria is very low.");
+            textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very low.");
         } else if (metric < 3) {
-            textView.setText("Based on the average properties of the cropped image, our Leukocoria test is inconclusive.");
+            textView.setText("Based on the average colors of the cropped image, our Leukocoria test is inconclusive.");
         } else{
-            textView.setText("Based on the average properties of the cropped image, the chance of Leukocoria is very high.");
+            textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very high.");
         }
     }
 
