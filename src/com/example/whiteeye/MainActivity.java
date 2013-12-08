@@ -351,6 +351,7 @@ public class MainActivity extends Activity {
         TextView textView = (TextView) findViewById(R.id.text_result);
 
         double metric = computeLeukocoriaMetric(pixelAvg);
+        System.out.println("Leukocoria metric: " + Double.toString(metric));
         if (metric < 1) {
             textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very low.");
         } else if (metric < 3) {
@@ -366,7 +367,7 @@ public class MainActivity extends Activity {
         double h = hsv[0];
         double s = hsv[1];
         double v = hsv[2];
-        if (h > 0.8) h -= 1;
+        if (h > 0.7) h -= 1;
 
         double metric_h = 1 - (h / 360.0 - 0.2) * (h / 360.0 - 0.2);
         if (metric_h < 0.1) metric_h = 0.1;
