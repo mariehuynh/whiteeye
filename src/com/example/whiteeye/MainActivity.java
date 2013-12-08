@@ -43,13 +43,8 @@ import android.widget.ImageView;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.paypal.android.sdk.payments.PayPalPayment;
 
-import
-com.paypal.android.sdk.payments.PayPalPayment;
-import
-com.paypal.android.sdk.payments.PayPalService;
-import
-com.paypal.android.sdk.payments.PaymentActivity;
 
 public class MainActivity extends Activity {
     private Uri mImageCaptureUri;
