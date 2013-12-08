@@ -19,6 +19,8 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.text.method.LinkMovementMethod;
+import android.text.Html;
 import android.view.TextureView;
 import android.view.View;
 
@@ -44,9 +46,8 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.main);
 
+        setContentView(R.layout.main);
 
         final String [] items			= new String [] {"Take from camera", "Select from gallery"};
 		ArrayAdapter<String> adapter	= new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
@@ -84,16 +85,25 @@ public class MainActivity extends Activity {
 
 		final AlertDialog dialog = builder.create();
 
-		Button button 	= (Button) findViewById(R.id.btn_crop);
-		mImageView		= (ImageView) findViewById(R.id.iv_photo);
+		Button cropButton = (Button) findViewById(R.id.btn_crop);
+		mImageView = (ImageView) findViewById(R.id.iv_photo);
 
-		button.setOnClickListener(new View.OnClickListener() {
+		cropButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog.show();
 			}
 		});
 
+        Button infoButton = (Button) findViewById(R.id.btn_info);
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://www.retinoblastoma.net/what_is.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -119,19 +129,19 @@ public class MainActivity extends Activity {
 		        if (extras != null) {
 		            Bitmap photo = extras.getParcelable("data");
 		            int red = 0xFFFF0000;
-		            
+
 		            // Draw horizontal red lines around area scanned
 		            for(int x = (int)(photo.getWidth()*.35); x<(int)(photo.getWidth()*.65); x++) {
 		            	photo.setPixel(x, (int) (photo.getHeight()*.35), red);
 		            	photo.setPixel(x, (int) (photo.getHeight()*.65), red);
 		            }
-		            
+
 		            // Draw vertical red lines around area scanned
 		            for(int y = (int)(photo.getHeight()*.35); y<(int)(photo.getHeight()*.65); y++) {
 		            	photo.setPixel((int) (photo.getHeight()*.35), y, red);
 		            	photo.setPixel((int) (photo.getHeight()*.65), y, red);
 		            }
-		            
+
 		            mImageView.setImageBitmap(photo);
 		        }
 
@@ -219,7 +229,7 @@ public class MainActivity extends Activity {
     public void display() {
     	Resources res = getResources();
     	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
-    	
+
     	int xmin = (int) (bitmap.getWidth() * 0.35),
     		xmax = (int) (bitmap.getWidth() * 0.65),
     	    ymin = (int) (bitmap.getHeight() * 0.35),
@@ -232,34 +242,43 @@ public class MainActivity extends Activity {
     	for(int i = xmin; i <= xmax; i++){
     		for(int j = ymin; j <= ymax; j++){
     	    	int pixel = bitmap.getPixel(i, j);
-    	    	
+
     	    	redTotal += Color.red(pixel);
     	    	blueTotal += Color.blue(pixel);
     	    	greenTotal += Color.green(pixel);
     		}
-    	}    	
-    	
+    	}
+
     	// Divide for average
     	long redAvg =  (long) (redTotal / ((xmax-xmin) * (ymax-ymin)));
     	long blueAvg =  (long) (blueTotal / ((xmax-xmin) * (ymax-ymin)));
     	long greenAvg =  (long) (greenTotal / ((xmax-xmin) * (ymax-ymin)));
-    	
+
     	// Correct for possible overflow from rounding errors
     	if(redAvg > 255) redAvg = 255;
     	if(blueAvg > 255) blueAvg = 255;
     	if(greenAvg > 255) greenAvg = 255;
-    	
+
     	Drawable drawable = res.getDrawable(R.drawable.test);
     	drawable.setColorFilter(Color.rgb((int)redAvg,(int)greenAvg,(int)blueAvg), PorterDuff.Mode.MULTIPLY);
         display = (ImageView) findViewById(R.id.test);
     	display.setImageDrawable(drawable);
     	display.layout(200,200,200,200);
-    	
+
     	int pixelAvg = (int)(redAvg);
     	pixelAvg = (int)((pixelAvg << 8) + greenAvg);
     	pixelAvg = (int)((pixelAvg << 8) + blueAvg);
 
-        System.out.println("Leukocoria metric: "+computeLeukocoriaMetric(pixelAvg));
+        TextView textView = (TextView) findViewById(R.id.text_result);
+
+        double metric = computeLeukocoriaMetric(pixelAvg);
+        if (metric < 1) {
+            textView.setText("Based on the average properties of the cropped image, the chance of Leukocoria is very low.");
+        } else if (metric < 3) {
+            textView.setText("Based on the average properties of the cropped image, our Leukocoria test is inconclusive.");
+        } else{
+            textView.setText("Based on the average properties of the cropped image, the chance of Leukocoria is very high.");
+        }
     }
 
     public double computeLeukocoriaMetric(int pixel){
@@ -269,9 +288,6 @@ public class MainActivity extends Activity {
         double s = hsv[1];
         double v = hsv[2];
         if (h > 0.8) h -= 1;
-
-    	System.out.println("pixel "+pixel);
-    	System.out.println("Hue: "+hsv[0]+" Saturation: "+hsv[1]+" Value: "+hsv[2]);
 
         double metric_h = 1 - (h / 360.0 - 0.2) * (h / 360.0 - 0.2);
         if (metric_h < 0.1) metric_h = 0.1;

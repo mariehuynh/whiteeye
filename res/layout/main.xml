@@ -22,7 +22,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="17sp"
-        android:text="How to select and crop image"/>
+        android:text="Select an image and crop down to the eye"/>
 
     <Button
 	    android:id="@+id/btn_crop"
@@ -53,6 +53,7 @@
        />
 
     <TextView
+        android:id="@+id/text_result"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -61,6 +62,11 @@
         android:gravity="right"
         android:textStyle="bold"
         android:textSize="17sp"
-        android:text="This is the text"/>
+        android:text=""/>
 
+    <Button
+	    android:id="@+id/btn_info"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Find out more about Retinoblastoma" />
 </LinearLayout>
