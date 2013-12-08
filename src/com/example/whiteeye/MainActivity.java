@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         setContentView(R.layout.main);
        
 
@@ -218,7 +218,8 @@ public class MainActivity extends Activity {
     	drawable.setColorFilter(Color.rgb(red,green,blue), PorterDuff.Mode.MULTIPLY);
         display = (ImageView) findViewById(R.id.test);
     	display.setImageDrawable(drawable);
-    	
+    	display.layout(200,200,200,200);
+
     	
     
     }
