@@ -77,9 +77,9 @@ public class MainActivity extends Activity {
         //End PayPal
 
         builder.setTitle("Select Image");
-        
+
         String msg = "Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases.  This app will scan an image of an eye and compare it to data collected from patients in a recent research study.  For best results, dilate the pupils and try to crop the photo in so the red box is in the pupil.  Thanks for checking this app out!";
-        
+
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Hello there!");
         alertDialog.setMessage(msg);
@@ -99,9 +99,9 @@ public class MainActivity extends Activity {
                     mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
                                        "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
                     intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                    intent.putExtra("return-data", true);
 
                     try {
-                        intent.putExtra("return-data", true);
                         startActivityForResult(intent, PICK_FROM_CAMERA);
                     } catch (ActivityNotFoundException e) {
                         e.printStackTrace();
