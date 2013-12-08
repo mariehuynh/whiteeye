@@ -93,9 +93,9 @@ public class MainActivity extends Activity {
 
         builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
             public void onClick( DialogInterface dialog, final int item ) { 
-                String msg = "For best results, first dilate the pupils in a dark room or with a blindfold.  Try to crop the photo in so the red box will be in the pupil.";
+                String msg = "First dilate the pupils in a dark room or with a blindfold.  Try to crop the photo in so the red box will be in the pupil.";
                 //AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Hello there!");
+                alertDialog.setTitle("For best results");
                 alertDialog.setMessage(msg);
                 alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
