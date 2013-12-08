@@ -45,14 +45,16 @@
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp" >
 
             <ImageView
                 android:id="@+id/test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_marginLeft="50dp"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
                 android:adjustViewBounds="true"
                 android:background="#152"
                 android:maxHeight="200dp"
@@ -63,8 +65,8 @@
                 android:id="@+id/text_result"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="25dp"
                 android:gravity="right"
                 android:paddingRight="5dp"
                 android:textAlignment="center"
