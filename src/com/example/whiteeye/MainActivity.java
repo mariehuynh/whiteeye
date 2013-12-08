@@ -207,15 +207,41 @@ public class MainActivity extends Activity {
         //System.out.println("IM ALIVE");
         
 	}
-    public void display(){
+    public void display() {
     	Resources res = getResources();
     	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
-    	int pixel = bitmap.getPixel(bitmap.getWidth()/2,bitmap.getHeight()/2);
-    	int red = Color.red(pixel);
-    	int blue = Color.blue(pixel);
-    	int green = Color.green(pixel);
+    	
+    	int xmin = bitmap.getWidth()/4,
+    		xmax = xmin * 3,
+    	    ymin = bitmap.getHeight()/4,
+    	    ymax = ymin * 3;
+    	long redTotal = 0;
+    	long blueTotal = 0;
+    	long greenTotal = 0;
+
+    	// Sum up for average over center
+    	for(int i = xmin; i <= xmax; i++){
+    		for(int j = ymin; j <= ymax; j++){
+    	    	int pixel = bitmap.getPixel(i, j);
+    	    	
+    	    	redTotal += Color.red(pixel);
+    	    	blueTotal += Color.blue(pixel);
+    	    	greenTotal += Color.green(pixel);
+    		}
+    	}    	
+    	
+    	// Divide for average
+    	long redAvg =  (long) (redTotal / ((xmax-xmin) * (ymax-ymin)));
+    	long blueAvg =  (long) (blueTotal / ((xmax-xmin) * (ymax-ymin)));
+    	long greenAvg =  (long) (greenTotal / ((xmax-xmin) * (ymax-ymin)));
+    	
+    	// Correct for possible overflow 
+    	if(redAvg > 255) redAvg = 255;
+    	if(blueAvg > 255) blueAvg = 255;
+    	if(greenAvg > 255) greenAvg = 255;
+    	
     	Drawable drawable = res.getDrawable(R.drawable.test);
-    	drawable.setColorFilter(Color.rgb(red,green,blue), PorterDuff.Mode.MULTIPLY);
+    	drawable.setColorFilter(Color.rgb((int)redAvg,(int)greenAvg,(int)blueAvg), PorterDuff.Mode.MULTIPLY);
         display = (ImageView) findViewById(R.id.test);
     	display.setImageDrawable(drawable);
     	
