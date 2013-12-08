@@ -118,7 +118,20 @@ public class MainActivity extends Activity {
 
 		        if (extras != null) {
 		            Bitmap photo = extras.getParcelable("data");
-
+		            int red = 0xFFFF0000;
+		            
+		            // Draw horizontal red lines around area scanned
+		            for(int x = (int)(photo.getWidth()*.35); x<(int)(photo.getWidth()*.65); x++) {
+		            	photo.setPixel(x, (int) (photo.getHeight()*.35), red);
+		            	photo.setPixel(x, (int) (photo.getHeight()*.65), red);
+		            }
+		            
+		            // Draw vertical red lines around area scanned
+		            for(int y = (int)(photo.getHeight()*.35); y<(int)(photo.getHeight()*.65); y++) {
+		            	photo.setPixel((int) (photo.getHeight()*.35), y, red);
+		            	photo.setPixel((int) (photo.getHeight()*.65), y, red);
+		            }
+		            
 		            mImageView.setImageBitmap(photo);
 		        }
 
