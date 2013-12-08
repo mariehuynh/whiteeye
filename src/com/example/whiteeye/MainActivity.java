@@ -78,9 +78,8 @@ public class MainActivity extends Activity {
 
         builder.setTitle("Select Image");
         
-        String msg = "Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases.  This app will scan an image of an eye and compare it to data collected from patients in a recent research study.  For best results, dilate the pupils and try to crop the photo in so the red box is in the pupil.  Thanks for checking this app out!";
-        
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        String msg = "Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases.  This app will scan an image of an eye and compare it to data collected from patients in a recent research study.  Thanks for checking this app out!";
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Hello there!");
         alertDialog.setMessage(msg);
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
@@ -93,28 +92,39 @@ public class MainActivity extends Activity {
         alertDialog.show();
 
         builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-            public void onClick( DialogInterface dialog, int item ) { //pick from camera
-                if (item == 0) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                       "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
-                    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+            public void onClick( DialogInterface dialog, final int item ) { 
+                String msg = "For best results, first dilate the pupils in a dark room or with a blindfold.  Try to crop the photo in so the red box will be in the pupil.";
+                //AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Hello there!");
+                alertDialog.setMessage(msg);
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int which) {
+                   	  //pick from camera
+                       if (item == 0) {
+                           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                           mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                                              "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".jpg"));
+                           intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
 
-                    try {
-                        intent.putExtra("return-data", true);
-                        startActivityForResult(intent, PICK_FROM_CAMERA);
-                    } catch (ActivityNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                } else { //pick from file
-                    Intent intent = new Intent();
+                           try {
+                               intent.putExtra("return-data", true);
+                               startActivityForResult(intent, PICK_FROM_CAMERA);
+                           } catch (ActivityNotFoundException e) {
+                               e.printStackTrace();
+                           }
+                       } else { //pick from file
+                           Intent intent = new Intent();
 
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                           intent.setType("image/*");
+                           intent.setAction(Intent.ACTION_GET_CONTENT);
 
-                    startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
+                           startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
 
-                }
+                       }
+                   }
+                });
+                // Set the Icon for the Dialog
+                alertDialog.show();
             }
         } );
 
@@ -368,11 +378,11 @@ public class MainActivity extends Activity {
         double metric = computeLeukocoriaMetric(pixelAvg);
         System.out.println("Leukocoria metric: " + Double.toString(metric));
         if (metric < 1) {
-            textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very low.");
+            textView.setText("Based on the average colors of the area in the red box, the chance of Leukocoria is very low.");
         } else if (metric < 3) {
-            textView.setText("Based on the average colors of the cropped image, our Leukocoria test is inconclusive.");
+            textView.setText("Based on the average colors of the area in the red box, our Leukocoria test is inconclusive.");
         } else{
-            textView.setText("Based on the average colors of the cropped image, the chance of Leukocoria is very high.");
+            textView.setText("Based on the average colors of the area in the red box, the chance of Leukocoria is very high.");
         }
     }
 
