@@ -207,10 +207,10 @@ public class MainActivity extends Activity {
     	Resources res = getResources();
     	Bitmap bitmap = ((BitmapDrawable)mImageView.getDrawable()).getBitmap();
     	
-    	int xmin = bitmap.getWidth()/4,
-    		xmax = xmin * 3,
-    	    ymin = bitmap.getHeight()/4,
-    	    ymax = ymin * 3;
+    	int xmin = (int) (bitmap.getWidth() * 0.35),
+    		xmax = (int) (bitmap.getWidth() * 0.65),
+    	    ymin = (int) (bitmap.getHeight() * 0.35),
+    	    ymax = (int) (bitmap.getHeight() * 0.65);
     	long redTotal = 0;
     	long blueTotal = 0;
     	long greenTotal = 0;
@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
     	long blueAvg =  (long) (blueTotal / ((xmax-xmin) * (ymax-ymin)));
     	long greenAvg =  (long) (greenTotal / ((xmax-xmin) * (ymax-ymin)));
     	
-    	// Correct for possible overflow 
+    	// Correct for possible overflow from rounding errors
     	if(redAvg > 255) redAvg = 255;
     	if(blueAvg > 255) blueAvg = 255;
     	if(greenAvg > 255) greenAvg = 255;
