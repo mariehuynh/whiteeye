@@ -44,11 +44,11 @@ import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 
-import 
+import
 com.paypal.android.sdk.payments.PayPalPayment;
-import 
+import
 com.paypal.android.sdk.payments.PayPalService;
-import 
+import
 com.paypal.android.sdk.payments.PaymentActivity;
 
 public class MainActivity extends Activity {
@@ -58,9 +58,9 @@ public class MainActivity extends Activity {
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_FROM_CAMERA = 2;
 	private static final int PICK_FROM_FILE = 3;
-	private static final int RESULT_PAYMENT_INVALID = 0;
-	private static final int RESULT_OK = 5;
-	private static final int RESULT_CANCELLED = 6;
+    private static final int DONATE_PAYPAL = 4;
+
+	private static final int RESULT_PAYMENT_INVALID = 1749;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,19 +71,16 @@ public class MainActivity extends Activity {
         final String [] items			= new String [] {"Take from camera", "Select from gallery"};
 		ArrayAdapter<String> adapter	= new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
 		AlertDialog.Builder builder		= new AlertDialog.Builder(this);
-//PayPal
-	    Intent intent = new Intent(this, PayPalService.class);
 
+        //PayPal
+	    Intent intent = new Intent(this, PayPalService.class);
 	    // live: don't put any environment extra
 	    // sandbox: use PaymentActivity.ENVIRONMENT_SANDBOX
 	    intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT, PaymentActivity.ENVIRONMENT_SANDBOX);
-
 	    intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, "ATGFoBAoBX_fdgrxqShtz7G9DzfZ8JoqbJ9GqUFfpvLLxqeqQ_VwRyvizOhd");
-
 	    startService(intent);
-	    
-	    
-//End PayPal
+        //End PayPal
+
 		builder.setTitle("Select Image");
 		builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
 			public void onClick( DialogInterface dialog, int item ) { //pick from camera
@@ -139,7 +136,16 @@ public class MainActivity extends Activity {
 
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (resultCode != RESULT_OK) return;
+        switch(resultCode) {
+            case Activity.RESULT_CANCELED: //PayPal
+                Log.i("paymentExample", "The user canceled.");
+
+                    break;
+            case RESULT_PAYMENT_INVALID: //PayPal
+                Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
+                break;
+        }
+	    if (resultCode != Activity.RESULT_OK) return;
 
 	    switch (requestCode) {
 		    case PICK_FROM_CAMERA:
@@ -183,40 +189,26 @@ public class MainActivity extends Activity {
 		        display();
 		        break;
 
-		    case RESULT_OK:   //PayPal
-		    	
-		        
-		       
-		                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-		                if (confirm != null) {
-		                    try {
-		                        Log.i("paymentExample", confirm.toJSONObject().toString(4));
+		    case DONATE_PAYPAL:   //PayPal
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirm != null) {
+                    try {
+                        Log.i("paymentExample", confirm.toJSONObject().toString(4));
 
-		                        // TODO: send 'confirm' to your server for verification.
-		                        // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
-		                        // for more details.
+                        // TODO: send 'confirm' to your server for verification.
+                        // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                        // for more details.
 
-		                    } catch (JSONException e) {
-		                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
-		                    }
-		                }
-		            
-	    			break;
-	    case RESULT_CANCELLED: //PayPal
-		            
-		                Log.i("paymentExample", "The user canceled.");
-		                
-		                break;
-	    case RESULT_PAYMENT_INVALID: //PayPal
-		           
-		                Log.i("paymentExample", "An invalid payment was submitted. Please see the docs.");
-		                break;
-		        
+                    } catch (JSONException e) {
+                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
 
+    			break;
 
 	    }
 	}
-    
+
     //PayPal
     @Override
     public void onDestroy() {
@@ -224,15 +216,15 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
     //End PayPal
-    
+
     //PayPal
     public void onDonatePressed(View pressed) {
-    	
+
     	//PayPalPayment payment = new PayPalPayment();
     	PayPalPayment payment = new PayPalPayment(new BigDecimal("20"), "USD", "Retinoblastoma.net suggested donation");
     	//Double your contribution if your employer has a Matching Gift Program!
-        
-       
+
+
         //PayPalPayment payment = new PayPalPayment(new BigDecimal("8.75"), "USD", "research help");
 
         Intent intent = new Intent(this, PaymentActivity.class);
@@ -251,11 +243,9 @@ public class MainActivity extends Activity {
         intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "nguyentiffanyus-facilitator@yahoo.com");
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, DONATE_PAYPAL);
     }
-    
-    
-//End PayPal
+    //End PayPal
 
     private void doCrop() {
 		final ArrayList<CropOption> cropOptions = new ArrayList<CropOption>();
