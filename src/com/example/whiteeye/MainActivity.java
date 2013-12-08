@@ -47,6 +47,7 @@ import com.paypal.android.sdk.payments.PayPalPayment;
 
 
 public class MainActivity extends Activity {
+
     private Uri mImageCaptureUri;
     private ImageView mImageView;
     private ImageView display;
@@ -142,6 +143,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(resultCode) {
             case Activity.RESULT_CANCELED: //PayPal
@@ -225,9 +227,6 @@ public class MainActivity extends Activity {
         PayPalPayment payment = new PayPalPayment(new BigDecimal("20"), "USD", "Retinoblastoma.net suggested donation");
         //Double your contribution if your employer has a Matching Gift Program!
 
-
-        //PayPalPayment payment = new PayPalPayment(new BigDecimal("8.75"), "USD", "research help");
-
         Intent intent = new Intent(this, PaymentActivity.class);
 
         // comment this line out for live or set to PaymentActivity.ENVIRONMENT_SANDBOX for sandbox
@@ -239,9 +238,10 @@ public class MainActivity extends Activity {
 
         // Provide a payerId that uniquely identifies a user within the scope of your system,
         // such as an email address or user ID.
-        intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "<someuser@somedomain.com>");
+        intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "<dec07@yahoo.com");
 
-        intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "nguyentiffanyus-facilitator@yahoo.com");
+        
+        intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "dec08@yahoo.com");
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
         startActivityForResult(intent, DONATE_PAYPAL);

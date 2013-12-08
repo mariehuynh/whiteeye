@@ -30,6 +30,7 @@
 	    android:layout_height="wrap_content"
 	    android:text="Select image" />
 
+    
     <ImageView
 	    android:id="@+id/iv_photo"
 	    android:layout_marginTop="10dp"
@@ -86,8 +87,9 @@
 
     <ImageButton
         android:id="@+id/btn_donate"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center"
         android:src="@drawable/donate_button"
         android:onClick="onDonatePressed"  />
 
