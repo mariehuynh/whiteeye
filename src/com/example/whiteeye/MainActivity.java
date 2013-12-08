@@ -376,11 +376,11 @@ public class MainActivity extends Activity {
         double metric = computeLeukocoriaMetric(pixelAvg);
         System.out.println("Leukocoria metric: " + Double.toString(metric));
         if (metric < 1) {
-            textView.setText("Based on the average colors of the area in the red box, the chance of Leukocoria is very low.");
+            textView.setText("Based on the average colors in the red box, the chance of Leukocoria is very low.");
         } else if (metric < 3) {
-            textView.setText("Based on the average colors of the area in the red box, our Leukocoria test is inconclusive.");
+            textView.setText("Based on the average colors in the red box, our Leukocoria test is inconclusive.");
         } else{
-            textView.setText("Based on the average colors of the area in the red box, the chance of Leukocoria is very high.");
+            textView.setText("Based on the average colors in the red box, the chance of Leukocoria is very high.");
         }
     }
 
