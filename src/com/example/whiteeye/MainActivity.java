@@ -77,6 +77,21 @@ public class MainActivity extends Activity {
         //End PayPal
 
         builder.setTitle("Select Image");
+        
+        String msg = "Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases.  This app will scan an image of an eye and compare it to data collected from patients in a recent research study.  For best results, dilate the pupils and try to crop the photo in so the red box is in the pupil.  Thanks for checking this app out!";
+        
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Hello there!");
+        alertDialog.setMessage(msg);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int which) {
+              // TODO Add your code for the button here.
+        	  // Do nothing for now
+           }
+        });
+        // Set the Icon for the Dialog
+        alertDialog.show();
+
         builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
             public void onClick( DialogInterface dialog, int item ) { //pick from camera
                 if (item == 0) {

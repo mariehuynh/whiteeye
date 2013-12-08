@@ -22,7 +22,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="17sp"
-        android:text="Select an image and crop down to the eye"/>
+        android:text="Select an image and crop down to the eye.  For best results, first dilate pupils in a dark room."/>
 
     <Button
 	    android:id="@+id/btn_crop"
