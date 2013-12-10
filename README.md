@@ -2,7 +2,7 @@
 
 Have you noticed a whitish discolouration of your child’s pupil in dim lighting conditions, from certain angles, or in place of a redeye in flash photos? The child might have leukocoria, the cause of which can be congenital cataract (60%), retinoblastoma (18%), retinal detachment (4.2%), persistent fetal vasculature (4.2%), and Coats disease (4.2%). Untreated retinoblastoma is universally fatal.  The incidence of this alone is 1 in 15,000 live births and leukocoria shows up in more than half the cases.  
 
-We built an app at a weekend hackathon to help with prescreening at home.  Our metrics are based on the results of research reported in this paper:
+We built an app at a weekend hackathon to help with prescreening at home.  Our metrics are based on the results of research reported in [this paper](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0076677#s2):
 
     Abdolvahabi A, Taylor BW, Holden RL, Shaw EV, Kentsis A, et al. (2013) Colorimetric and Longitudinal Analysis of Leukocoria in Recreational Photographs of Children with Retinoblastoma. PLoS ONE 8(10): e76677. doi:10.1371/journal.pone.0076677
     
