@@ -6,7 +6,9 @@ We built an app at a weekend hackathon to help with prescreening at home.  Our m
 
     Abdolvahabi A, Taylor BW, Holden RL, Shaw EV, Kentsis A, et al. (2013) Colorimetric and Longitudinal Analysis of Leukocoria in Recreational Photographs of Children with Retinoblastoma. PLoS ONE 8(10): e76677. doi:10.1371/journal.pone.0076677
     
-    
+This app works totally offline (except for a donation button to charity).  There are no ads and it doesn't phone home.
+
+
 Disclaimer: We are engineers, not lawyers or doctors, and can not give you medical advice.  Please see a professional for a real diagnosis.  If you sue us, we will be sad.
 
 ## Who we are
