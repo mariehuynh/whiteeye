@@ -7,7 +7,7 @@ We built an app at a weekend hackathon to help with prescreening at home.  Our m
 This app works totally offline (except for a donation button to charity).  There are no ads and it doesn't phone home.
 
 
-Disclaimer: We are engineers, not lawyers or doctors, and can not give you medical advice.  Please see a professional for a real diagnosis.  If you sue us, we will be sad.
+Disclaimer: We are engineers, not lawyers or doctors, and can not give you any medical advice whatsoever.  Please see a professional for a real diagnosis.  This is still under development and may not be accurate so it is for your entertainment only.  We're just trying to help, not make any money, so if you sue us, we will be sad and have to give you all of the $0 we were planning on making.  If you or someone you know is a lawyer and wants to help us navigate the legal squishiness in exchange for our thanks, a loaf of homemade bread, and a cut of the nonexistent profits, please contact Marie(marie@mariehuynh.com). 
 
 ## Who we are
 
@@ -40,7 +40,10 @@ We are happy to report that this app has accurately categorized images that were
 
 - We need to be able to batch process a lot of photos, which means using something like OpenCV to select the pupil area automatically for scanning.
 
-- We can build a bot that will scan public photos on social networking sites and alert people of possible cause for seeing an eye doctor.
+- We can build a service that will scan photos on social networking sites and alert people of possible cause for seeing an eye doctor.  This would be opt-in only.
+ 
+## How you can help
+Again, we are engineers, not lawyers, doctors, graphics designers, or copy editors.  Come help us make it better so that we can officially release something in app stores(for free)!
 
 
 ## For more information
