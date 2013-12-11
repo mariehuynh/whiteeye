@@ -381,17 +381,18 @@ public class MainActivity extends Activity {
         }
     }
 
+    // See python/batch_compute_metric.py for reference implementation.
     public double computeLeukocoriaMetric(int pixel){
         float hsv[] = new float[3];
         Color.colorToHSV(pixel, hsv);
         double h = hsv[0];
         double s = hsv[1];
         double v = hsv[2];
-        if (h > 0.7) h -= 1;
+        double h_center = 0.07;
+        if (h > 0.5 + h_center) h -= 1;
 
-        double metric_h = 1 - (h / 360.0 - 0.2) * (h / 360.0 - 0.2);
-        if (metric_h < 0.1) metric_h = 0.1;
-        double metric = metric_h / (2 * s * s + (1 - v) * (1 - v) + 0.01);
-        return metric;
+        double metric_h = 1 - (h / 360.0 - h_center);
+        double metric_sv = 1 / (2 * s * s + (1 - v) * (1 - v) + 0.01);
+        return metric_h * metric_sv;
     }
 }
