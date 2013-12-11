@@ -64,24 +64,23 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
 
         final String [] items = new String [] {"Take from camera", "Select from gallery"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item,items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, items);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.select_image_button_text));
 
         //PayPal
         Intent intent = new Intent(this, PayPalService.class);
         // live: don't put any environment extra
         // sandbox: use PaymentActivity.ENVIRONMENT_SANDBOX
         intent.putExtra(PaymentActivity.EXTRA_PAYPAL_ENVIRONMENT, PaymentActivity.ENVIRONMENT_SANDBOX);
-        intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, "ATGFoBAoBX_fdgrxqShtz7G9DzfZ8JoqbJ9GqUFfpvLLxqeqQ_VwRyvizOhd");
+        intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, R.string.paypal_client_id);
         startService(intent);
         //End PayPal
 
-        builder.setTitle("Select Image");
-        String msg = "Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases.  This app will scan an image of an eye and compare it to data collected from patients in a recent research study.  Thanks for checking this app out!";
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Hello there!");
-        alertDialog.setMessage(msg);
-        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getString(R.string.welcome_title));
+        alertDialog.setMessage(getString(R.string.welcome_text));
+        alertDialog.setButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int which) {
               // TODO Add your code for the button here.
         	  // Do nothing for now
@@ -91,12 +90,11 @@ public class MainActivity extends Activity {
         alertDialog.show();
 
         builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-            public void onClick( DialogInterface dialog, final int item ) { 
-                String msg = "First dilate the pupils in a dark room or with a blindfold.  Try to crop the photo in so the red box will be in the pupil.";
+            public void onClick( DialogInterface dialog, final int item ) {
                 //AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("For best results");
-                alertDialog.setMessage(msg);
-                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                alertDialog.setTitle(getString(R.string.crop_instructions_title));
+                alertDialog.setMessage(getString(R.string.crop_instructions));
+                alertDialog.setButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
                    	  //pick from camera
                        if (item == 0) {
@@ -242,13 +240,12 @@ public class MainActivity extends Activity {
 
         // it's important to repeat the clientId here so that the SDK has it if Android restarts your
         // app midway through the payment UI flow.
-        intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, "ATGFoBAoBX_fdgrxqShtz7G9DzfZ8JoqbJ9GqUFfpvLLxqeqQ_VwRyvizOhd");
+        intent.putExtra(PaymentActivity.EXTRA_CLIENT_ID, getString(R.string.paypal_client_id));
 
         // Provide a payerId that uniquely identifies a user within the scope of your system,
         // such as an email address or user ID.
-        intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "<dec07@yahoo.com");
+        intent.putExtra(PaymentActivity.EXTRA_PAYER_ID, "dec07@yahoo.com");
 
-        
         intent.putExtra(PaymentActivity.EXTRA_RECEIVER_EMAIL, "dec08@yahoo.com");
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
@@ -303,7 +300,7 @@ public class MainActivity extends Activity {
                 CropOptionAdapter adapter = new CropOptionAdapter(getApplicationContext(), cropOptions);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Choose Crop App");
+                builder.setTitle(getString(R.string.choose_crop_app));
                 builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
                     public void onClick( DialogInterface dialog, int item ) {
                         startActivityForResult( cropOptions.get(item).appIntent, CROP_FROM_CAMERA);
@@ -374,13 +371,13 @@ public class MainActivity extends Activity {
         TextView textView = (TextView) findViewById(R.id.text_result);
 
         double metric = computeLeukocoriaMetric(pixelAvg);
-        System.out.println("Leukocoria metric: " + Double.toString(metric));
+        Log.i(getString(R.string.app_name), "Leukocoria metric: " + Double.toString(metric));
         if (metric < 1) {
-            textView.setText("Based on the average colors in the red box, the chance of Leukocoria is very low.");
+            textView.setText(getString(R.string.leukocoria_result_low));
         } else if (metric < 3) {
-            textView.setText("Based on the average colors in the red box, our Leukocoria test is inconclusive.");
+            textView.setText(getString(R.string.leukocoria_result_inconclusive));
         } else{
-            textView.setText("Based on the average colors in the red box, the chance of Leukocoria is very high.");
+            textView.setText(getString(R.string.leukocoria_result_high));
         }
     }
 

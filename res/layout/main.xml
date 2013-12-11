@@ -15,14 +15,14 @@
     android:layout_height="fill_parent">
 
     <TextView
-        android:layout_width="fill_parent" 
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="17sp"
-        android:text="Select an image and crop down to the pupil.  For best results, first dilate pupils in a dark room."/>
+        android:text="@string/select_image_instructions"/>
 
     <Button
 	    android:id="@+id/btn_crop"
@@ -82,7 +82,7 @@
 	    android:id="@+id/btn_info"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:text="Find out more about Retinoblastoma" />
+	    android:text="@string/find_out_more" />
 
     <ImageButton
         android:id="@+id/btn_donate"

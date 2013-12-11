@@ -3,5 +3,17 @@
 
     <string name="app_name">WhiteEye</string>
     <string name="action_settings">Settings</string>
-
+    <string name="welcome_title">Hello there!</string>
+    <string name="welcome_text">Leukocoria is an abnormal white reflection from the retina of the eye that is indicative of retinoblastoma and other eye diseases. This app will scan an image of an eye and compare it to data collected from patients in a recent research study. Thanks for checking this app out!</string>
+    <string name="select_image_button_text">Select Image</string>
+    <string name="select_image_instructions">Select an image and crop down to the pupil. For best results, first dilate pupils in a dark room.</string>
+    <string name="find_out_more">Find out more about Retinoblastoma</string>
+    <string name="paypal_client_id">ATGFoBAoBX_fdgrxqShtz7G9DzfZ8JoqbJ9GqUFfpvLLxqeqQ_VwRyvizOhd</string>
+    <string name="crop_instructions_title">For best results</string>
+    <string name="crop_instructions">First dilate the pupils in a dark room or with a blindfold. Try to crop the photo in so the red box will be in the pupil.</string>
+    <string name="OK">OK</string>
+    <string name="choose_crop_app">Choose Crop App</string>
+    <string name="leukocoria_result_low">Based on the average colors in the red box, the chance of Leukocoria is very low.</string>
+    <string name="leukocoria_result_inconclusive">Based on the average colors in the red box, our Leukocoria test is inconclusive.</string>
+    <string name="leukocoria_result_high">Based on the average colors in the red box, the chance of Leukocoria is very high.</string>
 </resources>
