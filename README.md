@@ -31,7 +31,9 @@ Disclaimer: We are engineers, not lawyers or doctors, and can not give you any m
  
 ## Current state
 
-We are happy to report that this app has accurately categorized images that were inconclusive to humans.  And by humans, I mean our team and concerned parents on the internet who posted photos before getting a formal diagnosis.  In that regard, this weekend project was a success.  There is still much to do, however.  
+We are happy to report that this app has accurately categorized images that were inconclusive to humans.  And by humans, I mean our team and concerned parents on the internet who posted photos before getting a formal diagnosis.  In that regard, this weekend project was a success.  There is still much to do, however.
+
+Note also that the PayPal Donate button is in sandbox mode and thus will not operate.
 
 
 ## Future work
