@@ -1,13 +1,13 @@
 # White Eye
 
-Have you noticed a whitish discolouration of your child’s pupil in dim lighting conditions, from certain angles, or in place of a redeye in flash photos? The child might have leukocoria, the cause of which can be congenital cataract (60%), retinoblastoma (18%), retinal detachment (4.2%), persistent fetal vasculature (4.2%), and Coats disease (4.2%). Untreated retinoblastoma is universally fatal.  The incidence of this alone is 1 in 15,000 live births and leukocoria shows up in more than half the cases.  
+Have you noticed a whitish discolouration of your child’s pupil in dim lighting conditions, from certain angles, or in place of a redeye in flash photos? The child might have leukocoria, the cause of which can be congenital cataract (60%), retinoblastoma (18%), retinal detachment (4.2%), persistent fetal vasculature (4.2%), and Coats disease (4.2%). Untreated retinoblastoma is universally fatal.  The incidence of this alone is 1 in 15,000 live births and leukocoria shows up in more than half the cases.
 
 We built an app at a weekend hackathon to help with prescreening at home.  Our metrics are based on the results of research reported in [this paper](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0076677#s2).
 
 This app works totally offline (except for a donation button to charity).  There are no ads and it doesn't phone home.
 
 
-Disclaimer: We are engineers, not lawyers or doctors, and can not give you any medical advice whatsoever.  Please see a professional for a real diagnosis.  This is still under development and may not be accurate so it is for your entertainment only.  We're just trying to help, not make any money, so if you sue us, we will be sad and have to give you all of the $0 we were planning on making.  If you or someone you know is a lawyer and wants to help us navigate the legal squishiness in exchange for our thanks, a loaf of homemade bread, and a cut of the nonexistent profits, please contact Marie(marie@mariehuynh.com). 
+Disclaimer: We are engineers, not lawyers or doctors, and can not give you any medical advice whatsoever.  Please see a professional for a real diagnosis.  This is still under development and may not be accurate so it is for your entertainment only.  We're just trying to help, not make any money, so if you sue us, we will be sad and have to give you all of the $0 we were planning on making.  If you or someone you know is a lawyer and wants to help us navigate the legal squishiness in exchange for our thanks, a loaf of homemade bread, and a cut of the nonexistent profits, please contact Marie(marie@mariehuynh.com).
 
 ## Who we are
 
@@ -18,17 +18,17 @@ Disclaimer: We are engineers, not lawyers or doctors, and can not give you any m
 
 ## What we did
 
-1. Slice out the centers of the pupils in the leukocoria section of Figure 3 (Examples of Cropped Leukocoric and Non-Leukocoric Pupils) and batch process them to give each one an average color over the area.  
+1. Slice out the centers of the pupils in the leukocoria section of Figure 3 (Examples of Cropped Leukocoric and Non-Leukocoric Pupils) and batch process them to give each one an average color over the area.
 
-2. Assign each slice a value based on proximity of its average color to the area of positives as plotted in graphs conveniently given in Figure 10 (Saturation-Value Scale for Quantifying Leukocoria in Photographs of Children with Retinoblastoma.).  
+2. Assign each slice a value based on proximity of its average color to the area of positives as plotted in graphs conveniently given in Figure 10 (Saturation-Value Scale for Quantifying Leukocoria in Photographs of Children with Retinoblastoma.).
 
 3. Plotting them showed that they were fairly bimodal.  We developed a metric based on this.
 
 4. Built an Android app that implemented our metric.
 
-5. Tested images from Google Image Search.  
+5. Tested images from Google Image Search.
 
- 
+
 ## Current state
 
 We are happy to report that this app has accurately categorized images that were inconclusive to humans.  And by humans, I mean our team and concerned parents on the internet who posted photos before getting a formal diagnosis.  In that regard, this weekend project was a success.  There is still much to do, however.
@@ -43,7 +43,7 @@ Note also that the PayPal Donate button is in sandbox mode and thus will not ope
 - We need to be able to batch process a lot of photos, which means using something like OpenCV to select the pupil area automatically for scanning.
 
 - We can build a service that will scan photos on social networking sites and alert people of possible cause for seeing an eye doctor.  This would be opt-in only.
- 
+
 ## How you can help
 Again, we are engineers, not lawyers, doctors, graphics designers, or copy editors.  Come help us make it better so that we can officially release something in app stores(for free)!
 
