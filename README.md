@@ -1,6 +1,6 @@
 # White Eye
 
-Have you noticed a whitish discolouration of your child’s pupil in dim lighting conditions, from certain angles, or in place of a redeye in flash photos? The child might have leukocoria, the cause of which can be congenital cataract (60%), retinoblastoma (18%), retinal detachment (4.2%), persistent fetal vasculature (4.2%), and Coats disease (4.2%). Untreated retinoblastoma is universally fatal.  The incidence of this alone is 1 in 15,000 live births and leukocoria shows up in more than half the cases.
+Have you noticed a whitish discolouration of your child’s pupil in dim lighting conditions, from certain angles, or in place of a redeye in flash photos? The child might have leukocoria, which can be caused by one of over a dozen kinds of eye diseases, including congenital cataract (60%), retinoblastoma (18%), retinal detachment (4.2%), persistent fetal vasculature (4.2%), and Coats disease (4.2%). In children under the age of five, one of the most common causes is retinoblastoma, universally fatal if left untreated.  The incidence of this alone is 1 in 15,000 live births and leukocoria shows up in more than half the cases.
 
 We built an app at a weekend hackathon to help with prescreening at home.  Our metrics are based on the results of research reported in [this paper](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0076677#s2).
 
@@ -57,4 +57,6 @@ Again, we are engineers, not lawyers, doctors, graphics designers, or copy edito
 3. Seregard S, Lundell G, Svedberg H, Kivelä T. Incidence of retinoblastoma from 1958 to 1998 in Northern Europe: advantages of birth cohort analysis. Ophthalmology. 2004;111(6):1228–32.
 
 4. Abramson DH, Frank CM, Susman M, Whalen MP, Dunkel IJ, Boyd NW., 3rd Presenting signs of retinoblastoma. J Pediatr. 1998;132(3 Pt 1):505–8.
+
+5. http://www.chla.org/site/c.ipINKTOAJsG/b.6298193/k.8A57/Know_About_the_Glow__White_Glow__Childrens_Eyes__The_Vision_Center.htm#.UqeuN425ZjM
 
