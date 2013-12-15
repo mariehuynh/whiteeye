@@ -62,6 +62,8 @@ Again, we are engineers, not lawyers, doctors, graphics designers, or copy edito
 
 ## Acknowledgements
 
-The white eye icon is derived from [this icon](http://sweetclipart.com/blue-eye-logo-design-122) by Liz Aragon and is redistributed under the [Attribution-NonCommercial-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-nc-sa/3.0/) license.
+The white eye icon is derived from [this icon](http://sweetclipart.com/blue-eye-logo-design-122) by Liz Aragon and is redistributed under the [Creative Commons—Attribution-NonCommercial-ShareAlike](http://creativecommons.org/licenses/by-nc-sa/3.0/) license.
+
+The [figure](/exploration/journal.pone.0076677.g010.png) we used to derive our metric is taken from [doi:10.1371/journal.pone.0076677](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0076677) and is redistributed under the [Creative Commons—Attribution](http://creativecommons.org/licenses/by/2.5/) license.
 
 The image selection and crop functionality is based on [this tutorial](http://www.londatiga.net/featured-articles/how-to-select-and-crop-image-on-android/) and its [sample code](https://github.com/lorensiuswlt/AndroidImageCrop).
