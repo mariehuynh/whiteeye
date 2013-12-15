@@ -40,7 +40,6 @@ def compute_metric(image):
     #        checking outside of the cropped area.
     metric_sv = 1 / (2 * s * s + (1 - v) * (1 - v) + 0.01)
     metric = metric_h * metric_sv
-    print("{0:f}, {1:f}".format(metric_h, metric_sv))
     return metric
 
 files = sys.argv[1:]
