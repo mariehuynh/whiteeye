@@ -60,3 +60,8 @@ Again, we are engineers, not lawyers, doctors, graphics designers, or copy edito
 
 5. http://www.chla.org/site/c.ipINKTOAJsG/b.6298193/k.8A57/Know_About_the_Glow__White_Glow__Childrens_Eyes__The_Vision_Center.htm#.UqeuN425ZjM
 
+## Acknowledgements
+
+The white eye icon is derived from [this icon](http://sweetclipart.com/blue-eye-logo-design-122) by Liz Aragon and is redistributed under the [Attribution-NonCommercial-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-nc-sa/3.0/) license.
+
+The image selection and crop functionality is based on [this tutorial](http://www.londatiga.net/featured-articles/how-to-select-and-crop-image-on-android/) and its [sample code](https://github.com/lorensiuswlt/AndroidImageCrop).
