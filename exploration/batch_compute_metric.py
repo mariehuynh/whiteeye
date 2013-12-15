@@ -17,6 +17,7 @@ import sys
 from PIL import Image
 
 def compute_metric(image):
+    # Compute average color over the sample image
     rs, gs, bs = image.convert("RGB").split()
     rmean = sum(rs.getdata()) / len(rs.getdata())
     gmean = sum(gs.getdata()) / len(gs.getdata())
