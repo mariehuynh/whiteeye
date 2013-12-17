@@ -22,7 +22,7 @@ Disclaimer: We are engineers, not lawyers or doctors, and can not give you any m
 
 2. Assign each slice a value based on proximity of its average color to the area of positives as plotted in graphs conveniently given in Figure 10 (Saturation-Value Scale for Quantifying Leukocoria in Photographs of Children with Retinoblastoma.).
 
-3. Plotting them showed that they were fairly bimodal.  We developed a metric based on this.
+3. Plotting them showed that they were fairly bimodal.  We [developed a metric based on this](https://github.com/mariehuynh/whiteeye/wiki/Leukocoria-Metric).
 
 4. Built an Android app that implemented our metric.
 
