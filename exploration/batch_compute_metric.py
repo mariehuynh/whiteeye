@@ -39,7 +39,7 @@ def compute_metric(image):
     # FIXME: I'm concerned that variations in exposure will directly translate into
     #        variations in value. We'll want to verify sufficient exposure by
     #        checking outside of the cropped area.
-    metric_sv = 1 / (2 * s * s + (1 - v) * (1 - v) + 0.01)
+    metric_sv = 1 / (1.36 * s * s + (1 - v) * (1 - v) + 0.01)
     metric = metric_h * metric_sv
     return metric
 
